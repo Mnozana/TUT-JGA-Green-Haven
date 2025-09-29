@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Haven Sign Up</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="signup.css">
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">Green Haven</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Login</a></li>
+                <li><a href="signup.html" class="active">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="signup-container">
+        <section class="signup-hero" style="background-image: url('images/cover.jpg')">
+            <div class="signup-overlay"></div>
+            <div class="signup-content">
+                <h1>Join Green Haven Community</h1>
+                <p>Create your account to access exclusive gardening resources</p>
+            </div>
+        </section>
+
+        <section class="signup-form-section">
+            <div class="signup-form-container">
+                <h2>Create Your Account</h2>
+                <form class="signup-form" id="signupForm">
+                    <div class="form-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+                        <div id="name-error" class="error-message" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        <div id="email-error" class="error-message" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="haven-id">Create Haven ID</label>
+                        <input type="text" id="haven-id" name="haven-id" placeholder="Choose your Haven ID" required>
+                        <small>This will be your username for logging in</small>
+                        <div id="havenId-error" class="error-message" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Create a password" required>
+                        <small>Must be at least 8 characters with uppercase, lowercase, and a number</small>
+                        <div id="password-error" class="error-message" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                        <div id="confirm-password-error" class="error-message" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="terms-checkbox">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>
+                        </label>
+                        <div id="terms-error" class="error-message" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="newsletter-checkbox">
+                            <input type="checkbox" name="newsletter" checked>
+                            Subscribe to our gardening tips newsletter
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="signup-button" id="signupButton">
+                        <span id="signupText">Create Your Haven Account</span>
+                        <span id="signupLoading" style="display: none;">Creating Account...</span>
+                    </button>
+                    
+                    <div class="login-link">
+                        <p>Already have an account? <a href="index.html">Login to Your Haven</a></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Welcome Animation Modal -->
+    <div id="welcome-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 id="welcome-message">Welcome to Green Haven, <span id="user-name"></span>!</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p>Redirecting you to your gardening haven...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Green Haven Gardening. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBwBBfN5LG6RFRezR5cBfcWKv9iKzIdAvA",
+			authDomain: "green-haven-tut.firebaseapp.com",
+			databaseURL: "https://green-haven-tut-default-rtdb.firebaseio.com",
+			projectId: "green-haven-tut",
+			storageBucket: "green-haven-tut.firebasestorage.app",
+			messagingSenderId: "30246624131",
+			appId: "1:30246624131:web:e5e151aa0672721512f4b6"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Show error message
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        // Hide error message
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.style.display = 'none';
+        }
+
+        // Validate password strength
+        function validatePassword(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            
+            return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers;
+        }
+
+        // Check if Haven ID is available
+        async function checkHavenIdAvailability(havenId) {
+            try {
+                const snapshot = await db.collection('users').where('havenId', '==', havenId).get();
+                return snapshot.empty;
+            } catch (error) {
+                console.error('Error checking Haven ID:', error);
+                return false;
+            }
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            hideError('name-error');
+            hideError('email-error');
+            hideError('havenId-error');
+            hideError('password-error');
+            hideError('confirm-password-error');
+            hideError('terms-error');
+            
+            // Get form values
+            const fullName = document.getElementById('full-name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const havenId = document.getElementById('haven-id').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const termsAgreed = document.getElementById('terms').checked;
+            const newsletterSubscribed = document.querySelector('input[name="newsletter"]').checked;
+            
+            let isValid = true;
+            
+            // Validate full name
+            if (!fullName) {
+                showError('name-error', 'Please enter your full name');
+                isValid = false;
+            }
+            
+            // Validate email
+            if (!email) {
+                showError('email-error', 'Please enter your email address');
+                isValid = false;
+            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                showError('email-error', 'Please enter a valid email address');
+                isValid = false;
+            }
+            
+            // Validate Haven ID
+            if (!havenId) {
+                showError('havenId-error', 'Please choose a Haven ID');
+                isValid = false;
+            } else if (havenId.length < 3) {
+                showError('havenId-error', 'Haven ID must be at least 3 characters long');
+                isValid = false;
+            }
+            
+            // Validate password
+            if (!password) {
+                showError('password-error', 'Please create a password');
+                isValid = false;
+            } else if (!validatePassword(password)) {
+                showError('password-error', 'Password must be at least 8 characters with uppercase, lowercase letters and a number');
+                isValid = false;
+            }
+            
+            // Validate confirm password
+            if (!confirmPassword) {
+                showError('confirm-password-error', 'Please confirm your password');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('confirm-password-error', 'Passwords do not match');
+                isValid = false;
+            }
+            
+            // Validate terms
+            if (!termsAgreed) {
+                showError('terms-error', 'You must agree to the Terms of Service and Privacy Policy');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+
+            // Show loading state
+            document.getElementById('signupText').style.display = 'none';
+            document.getElementById('signupLoading').style.display = 'inline';
+            document.getElementById('signupButton').disabled = true;
+
+            try {
+                // Check if Haven ID is available
+                const isHavenIdAvailable = await checkHavenIdAvailability(havenId);
+                if (!isHavenIdAvailable) {
+                    showError('havenId-error', 'This Haven ID is already taken. Please choose another one.');
+                    return;
+                }
+
+                // Create user in Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Create user profile in Firestore
+                await db.collection('users').doc(user.uid).set({
+                    fullName: fullName,
+                    email: email,
+                    havenId: havenId,
+                    newsletterSubscribed: newsletterSubscribed,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                    profileCompleted: false
+                });
+
+                // Send email verification
+                await user.sendEmailVerification();
+
+                // Show welcome modal
+                document.getElementById('user-name').textContent = fullName;
+                document.getElementById('welcome-modal').style.display = 'block';
+                
+                // Simulate loading progress
+                const progressBar = document.querySelector('.loading-progress');
+                let width = 0;
+                const interval = setInterval(() => {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        // Redirect to home page
+                        window.location.href = 'home.html';
+                    } else {
+                        width += 10;
+                        progressBar.style.width = width + '%';
+                    }
+                }, 200);
+                
+            } catch (error) {
+                console.error('Signup error:', error);
+                
+                // Handle Firebase auth errors
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        showError('email-error', 'An account with this email already exists');
+                        break;
+                    case 'auth/invalid-email':
+                        showError('email-error', 'Invalid email address');
+                        break;
+                    case 'auth/weak-password':
+                        showError('password-error', 'Password is too weak');
+                        break;
+                    case 'auth/operation-not-allowed':
+                        showError('email-error', 'Email/password accounts are not enabled');
+                        break;
+                    default:
+                        showError('email-error', 'An error occurred during signup. Please try again.');
+                }
+            } finally {
+                // Reset loading state
+                document.getElementById('signupText').style.display = 'inline';
+                document.getElementById('signupLoading').style.display = 'none';
+                document.getElementById('signupButton').disabled = false;
+            }
+        });
+
+        // Real-time Haven ID availability check
+        document.getElementById('haven-id').addEventListener('blur', async function() {
+            const havenId = this.value.trim();
+            if (havenId.length >= 3) {
+                const isAvailable = await checkHavenIdAvailability(havenId);
+                if (!isAvailable) {
+                    showError('havenId-error', 'This Haven ID is already taken');
+                } else {
+                    hideError('havenId-error');
+                }
+            }
+        });
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            if (password.length > 0) {
+                if (validatePassword(password)) {
+                    hideError('password-error');
+                } else {
+                    showError('password-error', 'Password must be at least 8 characters with uppercase, lowercase letters and a number');
+                }
+            } else {
+                hideError('password-error');
+            }
+        });
+    </script>
+</body>
+</html>

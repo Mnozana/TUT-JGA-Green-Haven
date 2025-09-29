@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions - Green Haven Gardening</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="terms.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Green Haven</div>
+        <nav>
+            <ul>
+                <li><a href="home.html">Login</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="terms-container">
+        <section class="terms-hero" style="background-image: url('images/cover.jpg')">
+            <div class="terms-overlay"></div>
+            <div class="terms-content">
+                <h1>Terms and Conditions</h1>
+                <p>Please read these terms carefully before using our services</p>
+            </div>
+        </section>
+
+        <section class="terms-content-section">
+            <div class="terms-content-container">
+                <div class="last-updated">Last Updated: January 15, 2025</div>
+                
+                <div class="terms-text">
+                    <h2>1. Acceptance of Terms</h2>
+                    <p>By accessing or using the Green Haven Gardening website ("Service"), you agree to be bound by these Terms and Conditions ("Terms"). If you disagree with any part of the terms, you may not access the Service.</p>
+
+                    <h2>2. Account Terms</h2>
+                    <p>When you create an account with us, you must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account.</p>
+                    <p>You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password.</p>
+
+                    <h2>3. Intellectual Property Rights</h2>
+                    <p>The Service and its original content, features, and functionality are and will remain the exclusive property of Green Haven Gardening and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries.</p>
+
+                    <h2>4. User Content</h2>
+                    <p>Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material ("Content"). You are responsible for the Content that you post to the Service, including its legality, reliability, and appropriateness.</p>
+
+                    <h2>5. Prohibited Uses</h2>
+                    <p>You may use the Service only for lawful purposes and in accordance with these Terms. You agree not to use the Service:</p>
+                    <ul>
+                        <li>In any way that violates any applicable national or international law or regulation</li>
+                        <li>For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way</li>
+                        <li>To transmit, or procure the sending of, any advertising or promotional material without our prior written consent</li>
+                        <li>To impersonate or attempt to impersonate the Company, a Company employee, another user, or any other person or entity</li>
+                    </ul>
+
+                    <h2>6. Termination</h2>
+                    <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use the Service will immediately cease.</p>
+
+                    <h2>7. Limitation of Liability</h2>
+                    <p>In no event shall Green Haven Gardening, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
+
+                    <h2>8. Disclaimer</h2>
+                    <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied.</p>
+
+                    <h2>9. Governing Law</h2>
+                    <p>These Terms shall be governed and construed in accordance with the laws of the South Africa, without regard to its conflict of law provisions.</p>
+
+                    <h2>10. Changes to Terms</h2>
+                    <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+
+                    <h2>11. Contact Us</h2>
+                    <p>If you have any questions about these Terms, please contact us at:</p>
+                    <address>
+                        Green Haven Gardening<br>
+                        346 Weir Street<br>
+                        Ekhaya Junction, Block 8, 103B<br>
+                        support@greenhavengardening.com<br>
+                        (+27) 12 572 1243
+                    </address>
+                </div>
+
+                <div class="acceptance-section">
+                    <label class="accept-checkbox">
+                        <input type="checkbox" id="accept-terms">
+                        I have read and agree to the Terms and Conditions
+                    </label>
+                    <button type="button" class="accept-button" disabled>Accept Terms</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Green Haven Gardening. All rights reserved. | <a href="terms.html">Terms & Conditions</a> | <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script>
+        document.getElementById('accept-terms').addEventListener('change', function() {
+            document.querySelector('.accept-button').disabled = !this.checked;
+        });
+        
+        document.querySelector('.accept-button').addEventListener('click', function() {
+            alert('Thank you for accepting our Terms and Conditions.');
+            // In a real application, you would store this acceptance
+            window.location.href = 'signup.html'; // Redirect back to signup
+        });
+    </script>
+</body>
+</html>

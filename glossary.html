@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardening Glossary - Green Haven Gardening</title>
+    <link rel="stylesheet" href="glossary.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Green Haven</div>
+        <nav>
+		  <ul class="main-menu">
+			<li><a href="home.html">Home</a></li>
+			<li><a href="team.html">Team</a></li>
+			<li><a href="challenges.html">Challenges</a></li>
+			<li><a href="solutions.html">Solutions</a></li>
+			<li class="dropdown">
+			  <a href="#">Resources</a>
+			  <ul class="dropdown-menu">
+				<li><a href="irrigation.html">Irrigation Systems</a></li>
+				<li><a href="calculator.html">Calculator</a></li>
+				<li><a href="land-sale.html">Land Sale</a></li>
+			  </ul>
+			</li>
+			<li class="active"><a href="glossary.html">Glossary</a></li>
+		  </ul>
+		</nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1>Gardening Glossary</h1>
+            <p>Key terms every gardener should know</p>
+        </section>
+        
+        <div class="search-container">
+            <input type="text" id="glossary-search" placeholder="Search gardening terms...">
+            <button id="search-btn">Search</button>
+        </div>
+        
+        <div class="search-results-info" id="results-info"></div>
+        <div class="no-results" id="no-results">No matching terms found. Try a different search.</div>
+        
+        <div class="glossary-container" id="glossary-container">
+            <div class="glossary-term">
+                <h3 class="term">Annual</h3>
+                <p class="definition">A plant that completes its life cycle in one growing season, from seed to flower to seed.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Biennial</h3>
+                <p class="definition">A plant that takes two years to complete its life cycle, typically growing leaves the first year and flowering the second.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Compost</h3>
+                <p class="definition">Decomposed organic matter used to enrich soil, improve its structure, and provide nutrients to plants.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Deadheading</h3>
+                <p class="definition">The practice of removing spent flowers to encourage more blooms and prevent seed production.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Hardiness Zone</h3>
+                <p class="definition">A geographic area defined by its climate conditions, especially minimum temperatures, that determines which plants are likely to thrive there.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Mulch</h3>
+                <p class="definition">A protective layer of material (such as wood chips, straw, or leaves) spread on top of soil to conserve moisture, suppress weeds, and regulate temperature.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Perennial</h3>
+                <p class="definition">A plant that lives for more than two years, typically flowering and setting seed each year.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">pH</h3>
+                <p class="definition">A measure of soil acidity or alkalinity on a scale from 0 (most acidic) to 14 (most alkaline), with 7 being neutral.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Pruning</h3>
+                <p class="definition">The practice of cutting back plants to control growth, remove dead or diseased material, or encourage flowering and fruiting.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Transplanting</h3>
+                <p class="definition">Moving a plant from one location to another, either within a garden or from a container to the ground.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Germination</h3>
+                <p class="definition">The process by which a plant grows from a seed, beginning when the seed absorbs water and ending when the green shoot emerges.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Pollination</h3>
+                <p class="definition">The transfer of pollen from the male part of a flower to the female part, enabling fertilization and the production of seeds.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Photosynthesis</h3>
+                <p class="definition">The process by which green plants use sunlight to synthesize nutrients from carbon dioxide and water, producing oxygen as a byproduct.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Fertilizer</h3>
+                <p class="definition">A substance added to soil to provide nutrients that promote plant growth and productivity.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Herbicide</h3>
+                <p class="definition">A chemical substance used to control or destroy unwanted plants, commonly known as weeds.</p>
+            </div>
+            
+            <div class="glossary-term">
+                <h3 class="term">Pesticide</h3>
+                <p class="definition">A substance used for destroying insects or other organisms harmful to cultivated plants.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Green Haven Gardening. All rights reserved.</p>
+    </footer>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('glossary-search');
+        const searchBtn = document.getElementById('search-btn');
+        const resultsInfo = document.getElementById('results-info');
+        const noResults = document.getElementById('no-results');
+        const allTerms = document.querySelectorAll('.glossary-term');
+        
+        // Function to perform search
+        function performSearch() {
+            const searchText = searchInput.value.toLowerCase().trim();
+            let visibleCount = 0;
+            
+            if (searchText === '') {
+                // Show all terms if search is empty
+                allTerms.forEach(term => {
+                    term.style.display = 'block';
+                    term.classList.remove('highlight');
+                });
+                resultsInfo.textContent = '';
+                noResults.style.display = 'none';
+                return;
+            }
+            
+            // Filter terms based on search text
+            allTerms.forEach(term => {
+                const termTitle = term.querySelector('.term').textContent.toLowerCase();
+                const termDefinition = term.querySelector('.definition').textContent.toLowerCase();
+                
+                if (termTitle.includes(searchText) || termDefinition.includes(searchText)) {
+                    term.style.display = 'block';
+                    term.classList.add('highlight');
+                    visibleCount++;
+                } else {
+                    term.style.display = 'none';
+                    term.classList.remove('highlight');
+                }
+            });
+            
+            // Update results info
+            if (visibleCount > 0) {
+                resultsInfo.textContent = `Found ${visibleCount} matching term${visibleCount !== 1 ? 's' : ''}`;
+                noResults.style.display = 'none';
+            } else {
+                resultsInfo.textContent = '';
+                noResults.style.display = 'block';
+            }
+        }
+        
+        // Add event listener for search input (real-time filtering)
+        searchInput.addEventListener('input', performSearch);
+        
+        // Add event listener for search button (still works)
+        searchBtn.addEventListener('click', performSearch);
+        
+        // Add event listener for Enter key in search field
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    });
+</script>
+</body>
+</html>

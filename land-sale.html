@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Sale | Green Haven Gardening</title>
+    <link rel="stylesheet" href="home.css">
+    <style>
+        /* Additional styles specific to land sale page */
+        .land-sale-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .land-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .property-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .property-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .property-details {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .property-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+        
+        .property-location {
+            display: flex;
+            align-items: center;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .property-features {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .feature {
+            text-align: center;
+        }
+        
+        .feature-value {
+            font-weight: 700;
+            color: #2e7d32;
+        }
+        
+        .feature-label {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin: 15px 0;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+            background-color: #2e7d32;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .view-property-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-top: auto;
+        }
+        
+        .view-property-btn:hover {
+            background-color: #1b5e20;
+        }
+        
+        /* Sell Land Button Styles */
+        .sell-land-section {
+            text-align: center;
+            margin: 50px 0 30px;
+            padding: 40px 20px;
+            background-color: #f9fff9;
+            border-radius: 8px;
+            border: 2px dashed #88b388;
+        }
+        
+        .sell-land-section h2 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .sell-land-btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: #ffb74d;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .sell-land-btn:hover {
+            background-color: #ff9800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sell-land-section {
+                padding: 30px 15px;
+                margin: 40px 0 20px;
+            }
+            
+            .sell-land-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .sell-land-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Green Haven</div>
+        <nav>
+		  <ul class="main-menu">
+			<li><a href="home.html">Home</a></li>
+			<li><a href="team.html">Team</a></li>
+			<li><a href="challenges.html">Challenges</a></li>
+			<li><a href="solutions.html">Solutions</a></li>
+			<li class="dropdown">
+			  <a href="#">Resources</a>
+			  <ul class="dropdown-menu">
+				<li><a href="irrigation.html">Irrigation Systems</a></li>
+				<li><a href="calculator.html">Calculator</a></li>
+				<li class="active"><a href="Land-sale.html">Land sale</a></li>
+			  </ul>
+			</li>
+			<li><a href="glossary.html">Glossary</a></li>
+		  </ul>
+		</nav>
+    </header>
+
+    <main class="land-sale-container">
+        <section class="land-intro">
+            <h1>Available Garden Plots</h1>
+            <p>Discover the perfect piece of land for your gardening dreams with our selection of premium plots</p>
+        </section>
+
+        <div class="property-grid">
+            <!-- Property 1 -->
+            <div class="property-card">
+                <div class="property-image" style="background-image: url('images/pop1.jpg')"></div>
+                <div class="property-details">
+                    <h3 class="property-title">Vacant Land</h3>
+                    <div class="property-location">
+                        <span class="location-icon">📍</span> 
+                        <span>Mpumalanga, Middelburg</span>
+                    </div>
+                    <div class="property-features">
+                        <div class="feature">
+                            <div class="feature-value">3 581 m²</div>
+                            <div class="feature-label">Size</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-value">South</div>
+                            <div class="feature-label">Facing</div>
+                        </div>
+                    </div>
+                    <div class="price">R 4 890 000</div>
+                    <span class="tag">FOR SALE</span>
+                    <a href="https://www.privateproperty.co.za/for-sale/mpumalanga/middelburg/aerorand/T5085757" class="view-property-btn">View Property</a>
+                </div>
+            </div>
+            
+            <!-- Property 2 -->
+            <div class="property-card">
+                <div class="property-image" style="background-image: url('images/Prop2.jpg')"></div>
+                <div class="property-details">
+                    <h3 class="property-title">Middelburg Vegetable Farm</h3>
+                    <div class="property-location">
+                        <span class="location-icon">📍</span> 
+                        <span>Mpumalanga, Middelburg</span>
+                    </div>
+                    <div class="property-features">
+                        <div class="feature">
+                            <div class="feature-value">215 ha</div>
+                            <div class="feature-label">Size</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-value">East</div>
+                            <div class="feature-label">Facing</div>
+                        </div>
+                    </div>
+                    <div class="price">R 6 330 000</div>
+                    <span class="tag">Potential game and Lodge</span>
+                    <a href="https://www.privateproperty.co.za/for-sale/mpumalanga/middelburg/middelburg-central/T4629657" class="view-property-btn">View Property</a>
+                </div>
+            </div>
+            
+            <!-- Property 3 -->
+            <div class="property-card">
+                <div class="property-image" style="background-image: url('images/Prop3.jpg')"></div>
+                <div class="property-details">
+                    <h3 class="property-title">Bainsvlei Vacant Land</h3>
+                    <div class="property-location">
+                        <span class="location-icon">📍</span> 
+                        <span>Free-State, Bloemfontein</span>
+                    </div>
+                    <div class="property-features">
+                        <div class="feature">
+                            <div class="feature-value">4.28 ha</div>
+                            <div class="feature-label">Size</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-value">West</div>
+                            <div class="feature-label">Facing</div>
+                        </div>
+                    </div>
+                    <div class="price">R 1 431 000</div>
+                    <span class="tag">Farm Land</span>
+                    <a href="https://www.privateproperty.co.za/for-sale/free-state/bloemfontein/bainsvlei/T4979286" class="view-property-btn">View Property</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sell Land Section -->
+        <section class="sell-land-section">
+            <h2>Have Land to Sell?</h2>
+            <p>List your property with us and reach thousands of potential buyers</p>
+            <a href="https://www.privateproperty.co.za/estate-agents-in-south-africa" class="sell-land-btn">Sell Your Land</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Green Haven Gardening. All rights reserved.</p>
+    </footer>
+</body>
+</html>
