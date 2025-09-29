@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Haven Gardening</title>
+    <link rel="stylesheet" href="home.css">
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <style>
+        /* Additional styles for clickable feature cards */
+        .feature-card {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .feature-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Success message styles */
+        .success-message {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            border: 1px solid #c3e6cb;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.7s ease-in;
+        }
+
+        /* User info styles */
+        .user-info {
+            display: none;
+            background-color: var(--secondary-green);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .user-info.show {
+            display: inline-block;
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Green Haven</div>
+        <nav>
+            <ul class="main-menu">
+                <li class="active"><a href="home.html">Home</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="challenges.html">Challenges</a></li>
+                <li><a href="solutions.html">Solutions</a></li>
+                <li class="dropdown">
+                    <a href="#">Resources</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="irrigation.html">Irrigation Systems</a></li>
+                        <li><a href="calculator.html">Calculator</a></li>
+                        <li><a href="land-sale.html">Land Sale</a></li>
+                    </ul>
+                </li>
+                <li><a href="glossary.html">Glossary</a></li>
+                <li id="authSection">
+                    <span id="userInfo" class="user-info"></span>
+                    <a href="#" id="logoutButton" style="display: none;">Logout</a>
+                    <a href="index.html" id="loginButton">Login</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+       <section class="hero" style="background-image: url('images/cover.jpg')">
+            <div class="hero-content">
+                <h1>Welcome to Green Haven</h1>
+                <p id="welcomeText">"One vision, many hands, shared success."</p>
+                <a href="solutions.html" class="cta-button">Dive in</a>
+            </div>
+        </section>
+
+        <!-- Mission Statement Section -->
+        <section class="mission-section">
+            <h2>Our Mission</h2>
+            <div class="mission-content">
+                <p><span class="mission-highlight">Green Haven Gardening</span> is dedicated to empowering gardeners and agricultural enthusiasts with comprehensive resources, tools, and solutions for sustainable gardening practices. We provide expert guidance on efficient irrigation systems, land acquisition opportunities, and practical calculators to optimize water usage and plant health.</p>
+                <p>Our mission is to make gardening accessible, efficient, and environmentally conscious for everyone from home gardeners to commercial farmers.</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Why Choose Us</h2>
+            <div class="feature-grid">
+                <div class="feature-card" onclick="trackFeatureClick('team')">
+                    <a href="team.html">
+                        <img src="images/team.jpg" alt="Expert Team">
+                        <h3>Expert Team</h3>
+                        <p>Learn from our passionate gardening professionals</p>
+                    </a>
+                </div>
+                <div class="feature-card" onclick="trackFeatureClick('challenges')">
+                    <a href="challenges.html">
+                        <img src="images/challenge.jpg" alt="Common Challenges">
+                        <h3>Common Challenges</h3>
+                        <p>Solutions for typical gardening problems</p>
+                    </a>
+                </div>
+                <div class="feature-card" onclick="trackFeatureClick('solutions')">
+                    <a href="solutions.html">
+                        <img src="images/solution.jpg" alt="Practical Solutions">
+                        <h3>Practical Solutions</h3>
+                        <p>Actionable advice for your garden</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <h2>What Our Community Says</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"Green Haven transformed my backyard into a thriving vegetable garden. The irrigation calculator saved me 40% on water bills!"</p>
+                        <div class="testimonial-author">- Sarah M., Home Gardener</div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"The expert advice helped our community garden flourish. Highly recommended for both beginners and experts."</p>
+                        <div class="testimonial-author">- David T., Community Garden Coordinator</div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"As a commercial farmer, the land acquisition resources were invaluable for expanding our operations sustainably."</p>
+                        <div class="testimonial-author">- Maria L., Organic Farm Owner</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter">
+            <div class="newsletter-content">
+                <h2>Stay Updated with Green Tips</h2>
+                <p>Subscribe to our newsletter for monthly gardening insights and exclusive resources</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email" required id="emailInput">
+                    <button type="submit" class="cta-button" id="subscribeButton">
+                        <span id="subscribeText">Subscribe</span>
+                        <span id="subscribeLoading" style="display: none;">Subscribing...</span>
+                    </button>
+                </form>
+                <div class="success-message" id="successMessage">
+                    Thank you for subscribing! You're now on our list and will start receiving updates soon.
+                </div>
+            </div>
+        </section>
+
+        <!-- User Stats Section (for logged-in users) -->
+        <section class="user-stats" id="userStatsSection" style="display: none;">
+            <div class="container">
+                <h2>Your Gardening Journey</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="resourcesAccessed">0</h3>
+                        <p>Resources Accessed</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="newsletterSubscribed">0</h3>
+                        <p>Newsletters</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="lastLogin">-</h3>
+                        <p>Last Visit</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="memberSince">-</h3>
+                        <p>Member Since</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Green Haven Gardening. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBwBBfN5LG6RFRezR5cBfcWKv9iKzIdAvA",
+			authDomain: "green-haven-tut.firebaseapp.com",
+			databaseURL: "https://green-haven-tut-default-rtdb.firebaseio.com",
+			projectId: "green-haven-tut",
+			storageBucket: "green-haven-tut.firebasestorage.app",
+			messagingSenderId: "30246624131",
+			appId: "1:30246624131:web:e5e151aa0672721512f4b6"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let userData = null;
+
+        // Check authentication state
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadUserData(user);
+                updateUI();
+            } else {
+                // User is not logged in, show login button
+                updateUIForGuest();
+            }
+        });
+
+        // Load user data from Firestore
+        async function loadUserData(user) {
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    userData = userDoc.data();
+                    
+                    // Update last login
+                    await db.collection('users').doc(user.uid).update({
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    // Load user stats
+                    await loadUserStats(user.uid);
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        // Load user statistics
+        async function loadUserStats(userId) {
+            try {
+                const statsDoc = await db.collection('userStats').doc(userId).get();
+                if (statsDoc.exists) {
+                    const stats = statsDoc.data();
+                    updateStatsDisplay(stats);
+                } else {
+                    // Initialize stats if they don't exist
+                    await initializeUserStats(userId);
+                }
+            } catch (error) {
+                console.error('Error loading user stats:', error);
+            }
+        }
+
+        // Initialize user stats
+        async function initializeUserStats(userId) {
+            const initialStats = {
+                resourcesAccessed: 0,
+                newsletterSubscribed: 0,
+                featuresClicked: {},
+                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            await db.collection('userStats').doc(userId).set(initialStats);
+            updateStatsDisplay(initialStats);
+        }
+
+        // Update stats display
+        function updateStatsDisplay(stats) {
+            document.getElementById('resourcesAccessed').textContent = stats.resourcesAccessed || 0;
+            document.getElementById('newsletterSubscribed').textContent = stats.newsletterSubscribed || 0;
+            
+            if (userData) {
+                document.getElementById('lastLogin').textContent = 'Today';
+                document.getElementById('memberSince').textContent = userData.createdAt ? 
+                    new Date(userData.createdAt.toDate()).toLocaleDateString() : 'Recently';
+            }
+        }
+
+        // Update UI for logged-in users
+        function updateUI() {
+            if (userData) {
+                // Update welcome text
+                const welcomeText = document.getElementById('welcomeText');
+                welcomeText.textContent = `Welcome back, ${userData.fullName || 'Gardener'}! "One vision, many hands, shared success."`;
+
+                // Update auth section
+                document.getElementById('userInfo').textContent = `Hello, ${userData.fullName || userData.havenId || 'User'}!`;
+                document.getElementById('userInfo').classList.add('show');
+                document.getElementById('logoutButton').style.display = 'inline';
+                document.getElementById('loginButton').style.display = 'none';
+
+                // Show user stats section
+                document.getElementById('userStatsSection').style.display = 'block';
+
+                // Track page view
+                trackPageView();
+            }
+        }
+
+        // Update UI for guest users
+        function updateUIForGuest() {
+            document.getElementById('userInfo').classList.remove('show');
+            document.getElementById('logoutButton').style.display = 'none';
+            document.getElementById('loginButton').style.display = 'inline';
+            document.getElementById('userStatsSection').style.display = 'none';
+        }
+
+        // Track feature clicks
+        async function trackFeatureClick(featureName) {
+            if (!currentUser) return;
+
+            try {
+                // Log feature click
+                await db.collection('featureClicks').add({
+                    userId: currentUser.uid,
+                    feature: featureName,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Update resources accessed count
+                await db.collection('userStats').doc(currentUser.uid).update({
+                    resourcesAccessed: firebase.firestore.FieldValue.increment(1),
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Reload stats to reflect changes
+                const statsDoc = await db.collection('userStats').doc(currentUser.uid).get();
+                if (statsDoc.exists) {
+                    updateStatsDisplay(statsDoc.data());
+                }
+            } catch (error) {
+                console.error('Error tracking feature click:', error);
+            }
+        }
+
+        // Track page views
+        async function trackPageView() {
+            if (!currentUser) return;
+
+            try {
+                await db.collection('pageViews').add({
+                    userId: currentUser.uid,
+                    page: 'home',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    userAgent: navigator.userAgent
+                });
+            } catch (error) {
+                console.error('Error tracking page view:', error);
+            }
+        }
+
+        // Newsletter subscription functionality
+        document.getElementById('newsletterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('emailInput');
+            const successMessage = document.getElementById('successMessage');
+            const email = emailInput.value.trim();
+
+            // Simple email validation
+            if (!email || !isValidEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('subscribeText').style.display = 'none';
+            document.getElementById('subscribeLoading').style.display = 'inline';
+            document.getElementById('subscribeButton').classList.add('loading');
+
+            try {
+                // Store newsletter subscription in Firestore
+                const subscriptionData = {
+                    email: email,
+                    subscribedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    active: true
+                };
+
+                // If user is logged in, associate with their account
+                if (currentUser) {
+                    subscriptionData.userId = currentUser.uid;
+                    
+                    // Update user's newsletter preference
+                    await db.collection('users').doc(currentUser.uid).update({
+                        newsletterSubscribed: true
+                    });
+
+                    // Update newsletter count in stats
+                    await db.collection('userStats').doc(currentUser.uid).update({
+                        newsletterSubscribed: firebase.firestore.FieldValue.increment(1)
+                    });
+
+                    // Reload stats
+                    const statsDoc = await db.collection('userStats').doc(currentUser.uid).get();
+                    if (statsDoc.exists) {
+                        updateStatsDisplay(statsDoc.data());
+                    }
+                }
+
+                await db.collection('newsletterSubscriptions').add(subscriptionData);
+
+                // Show success message
+                successMessage.classList.add('show');
+                
+                // Clear the input field
+                emailInput.value = '';
+                
+                // Hide the success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 5000);
+
+            } catch (error) {
+                console.error('Error subscribing to newsletter:', error);
+                alert('There was an error subscribing. Please try again.');
+            } finally {
+                // Reset loading state
+                document.getElementById('subscribeText').style.display = 'inline';
+                document.getElementById('subscribeLoading').style.display = 'none';
+                document.getElementById('subscribeButton').classList.remove('loading');
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutButton').addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            try {
+                // Log logout event
+                if (currentUser) {
+                    await db.collection('userSessions').add({
+                        userId: currentUser.uid,
+                        action: 'logout',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                // Sign out from Firebase
+                await auth.signOut();
+                
+                // Redirect to login page
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Error during logout:', error);
+                alert('Error logging out. Please try again.');
+            }
+        });
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
+                    loadUserData(user);
+                }
+            });
+        });
+    </script>
+
+    <style>
+        /* Additional styles for user stats section */
+        .user-stats {
+            background: var(--light-bg);
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            border-radius: 8px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .user-stats {
+                padding: 2rem 1rem;
+                margin: 2rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>
